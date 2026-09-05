@@ -1,71 +1,92 @@
-# CWP-Clamping-Battery-Swap-System (CWP-ClampingLock)
+> **다국어 공개 안내:** 본 문서는 동일 내용의 한/영 이중 공개 문서입니다. v2.1 2026-09-06 (영문: [README_EN.md](README_EN.md))  
+> **Original Authority Notice:** 본 기술 명세의 법적·공학적 판단 최상위 기준은 한글 원본(`README.ko.md`)에 귀속되며, 영문본은 보조 참조용으로만 기능한다. (PHILOSOPHY.ko.md is authoritative original)
 
-> 전기가 끊기면 고정을 유지하도록 지향하는 자석 클램핑 플랫폼
+# CWP-Clamping-Battery-Swap-System v2.1 (CWP-ClampingLock)
+
+* **공개 일자:** 2026-09-06 (초안 2026-08-20, v2.0 2026-08-23, v2.1 2026-09-06)
+* **작성자:** deundeuni (System Architect / Natural Person Inventor)
+* **라이선스:** CERN-OHL-S v2 (하드웨어/CAD/도면) | CC BY-SA 4.0 (문서/설명)
+* **공개 목적:** 방어적 공개 / 선행기술(Prior Art) 등록 - 독점 특허화 방지 및 권리 침해 위험 완화
+* **검색 키워드:** CWP, CWP-Clamping, CWP-ClampingLock, EPM, Electro-Permanent Magnet, 펄스 구동 영구자석, 캡티브 듀얼 핀, 3중 쿠션, 비접촉 고정, EV 배터리 스왑, 무전원 고정, Prior Art, CWP-Entry, CWP-Battery-Swap, CWP-Rolling-Self-Align
+
+---
+
+## 0. 설계자 독자 아키텍처 및 선행기술 공개 선언 (Designer's Philosophical Declaration)
+
+1. **설계 철학 및 기술 조합의 독자성 (Architectural Conception):**  
+   본 시스템은 특정 기업의 독점적인 방식을 모방한 것이 아니라, 교환식 배터리 생태계가 요구하는 상호 호환성과 정전 시 무전원 고정 유지라는 표준적 안전 요구사항을 해결하고자 하는 **설계자(deundeuni)의 독자적 철학과 문제 의식**에서 출발하였다. '펄스 구동 영구자석(EPM) 비접촉 체결 + 캡티브 듀얼 핀 구속 + 3중 쿠션 완충 메커니즘'을 결합하고, 범용 고정 인터페이스 파라미터를 정립한 아키텍처 결정권은 설계자 자연인에게 있다.
+
+2. **소프트웨어 유틸리티 활용에 관한 명시 (Software Utility Limitation):**  
+   본 문서 작성 과정에서 활용된 소프트웨어 및 AI 도구(Meta AI, Google Gemini)는 설계자가 이미 정의한 기술 조합, 설계 방향, 수치 파라미터를 바탕으로 단순 포맷팅, 문맥 정제, 개념 시각화 출력을 실행한 **수동적 실행 유틸리티(Passive Execution Utility)**에 국한된다. 본 인프라의 모든 설계 의도, 구조적 결합권, 선행기술 공개 권한은 전적으로 설계자 자연인에게 귀속된다.
 
 ---
 
 ## 1. 개요
-무거운 배터리를 고정하기 위한 범용 클램핑 모듈의 개념 설계입니다.
-
-### 1.1 설계 철학: 특정 기업이 아닌, 산업 표준에서 착안
-본 설계는 특정 기업의 방식을 모방한 것이 아니라, 교환식 배터리 생태계가 요구하는 상호 호환성과 무전원 유지라는 표준적 요구사항에서 출발했습니다. 자동차를 넘어 물류 로봇, 드론 등 다양한 플랫폼에 적용 가능한 범용 인터페이스를 목표로 기획되었습니다.
+CWP-ClampingLock은 전기차, 물류 로봇, 드론 등 다종 모빌리티 배터리 고정을 위한 범용 EPM 마그네틱 클램핑 모듈 개념 설계이다.  
+특정 기업의 독점 방식을 배제하고 상호 호환성과 무전원 유지 표준 기준을 충족하는 범용 인터페이스 구조를 지향한다.
 
 ---
 
-## 2. 고정 원리
-- **펄스 구동 영구자석(EPM) 방식:** 짧은 신호로 영구자석을 자화시켜 고정. 고정 후 전원 유지가 필요 없는 구조를 지향.
-- **캡티브 듀얼 핀 구조:** 핀이 외부로 이탈되지 않는 내부 유지 구조.
-- **비접촉 고정:** 자력 기반 고정으로 마찰, 마모, 소음을 줄이는 방식.
+## 2. 고정 원리 및 기획 배경
 
-### 2.1 왜 이 방식을 기획했는가?
-- **교환 시간 단축을 검토하기 위해:** 기존 회전식 기계식 체결 방식 대비 비접촉 자력 방식을 검토했습니다.
-- **무전원 상태에서의 안전성을 고려하기 위해:** EPM은 전원 차단 시에도 자력이 유지되는 특성을 고려하여 채택했습니다.
-- **다양한 생태계 적용을 위해:** 하나의 규격으로 여러 플랫폼에서 호환 가능한 인터페이스로 설계했습니다.
+* **펄스 구동 영구자석(EPM) 방식:** 순간 펄스 전원 신호로 영구자석 극성을 전환하여 체결 및 해제를 수행하며, 체결 후에는 추가 전원 공급 없이 영구자석 자체 자력으로 고정 상태를 유지하는 무전원 안전 구조를 지향함.
+* **캡티브 듀얼 핀 구조:** 핀이 외부로 이탈되지 않는 내부 기계식 구속 구조를 적용하여 진동 환경에서의 이탈 방지 및 다중 체결 안정성을 도모함.
+* **비접촉 자력 체결:** 자력 기반 인터페이스로 기존 접촉 기계식 구조 대비 마찰, 마모, 소음 완화를 도모함.
 
 ---
 
-## 3. 흔들림 방지 구조 (3중 쿠션)
-- **우레탄 패드:** 배터리 접촉면 충격 완화
-- **접시 스프링:** 핀 후면 미세 진동 흡수
-- **에어갭:** 자석과 배터리 사이 설계 틈새를 통한 완충
+## 3. 흔들림 방지 구조 (3중 쿠션 완충 메커니즘)
 
-### 📐 모듈 분해 전개도 (Exploded View)
-![CWP-ClampingLock 분해 전개도](./cwp-clampinglock-exploded-view.webp)
-> *※ 본 도면은 설계자의 의도와 세부 구조 기획을 바탕으로 Meta AI를 통해 생성한 개념 전개도이며, 실제 치수와 다를 수 있습니다.*
+* **우레탄 패드:** 배터리 접촉면 충격 완화 및 신속 체결 완충.
+* **접시 스프링:** 핀 후면 미세 진동 흡수 및 자력 인력 방향 예하중 유지.
+* **에어갭 (Air Gap):** 자석과 배터리 인터페이스 사이 유연 틈새 설계를 통한 구조적 충격 분산.
 
 ---
 
-## 4. 구조적 특징
-- 단순하고 경량화된 구조
-- 소음과 마모를 줄이는 메커니즘 지향
-- 정전 시 고정 상태 유지를 지향하는 안전 구조
-- 다양한 플랫폼에 적용 가능한 범용 모듈 설계
+## 3.5 CWP 3대 하드웨어 연계 및 생존 아키텍처 (CWP 3-Hardware & System Integration)
 
-### 4.1 시스템 연결성 (System Connectivity)
-본 ClampingLock은 단독 모듈이 아니라 CWP 전체 교환 플랫폼의 관문 역할을 합니다. 진입 가이드 모듈과 연결되어 정렬을 받고, 후단의 커넥터 체결 모듈과 연동되는 구조로 기획되었습니다. 전체 시스템 중 '고정'이라는 핵심 기능을 담당합니다.
+본 ClampingLock 모듈은 단독 고정 장치에 그치지 않고 CWP 3대 핵심 하드웨어 메커니즘 및 상위 생존 아키텍처와 유기적으로 결합되어 무중단 생존 지향형 교환 스테이션으로 동작할 수 있다.
 
----
-
-## 5. 활용 분야
-- 전동 모빌리티 교환형 배터리
-- 공장 물류 로봇, 배달 로봇, 무인 항공기(드론)
-- 장비 고정이 필요한 일반 산업용 플랫폼
+* **진입 유도 및 1차 정렬 (`CWP-Entry`):** 세차장 V레일 인프라 원용 및 라인 레이저 가이드를 통해 차량 진입 오차를 완화하고 정비 구역으로 유도함.
+* **기구적 2차 정렬 (`CWP-Rolling-Self-Align-Battery-Swap-System`):** V-홈 및 캐스터 수동/자율 정렬 메커니즘(A/B/C/S 타입)과 연동하여 진입 후 치수 오차(예: ±5mm 이상)를 물리적으로 흡수하고 정밀 도킹 구역으로 유도함.
+* **차동 감속 저충격 도킹 (`CWP-Battery-Swap`):** N/(N+1) 차동 기어비(예: 60T/61T) 및 회전형 스테이지를 활용하여 도킹 상대속도를 극저속(예: 0.016rpm 수준)으로 감속시켜 완충 도킹을 지향함.
+* **전자기 클램핑 및 안전 체결 (`CWP-Clamping-Battery-Swap-System` - 본 기술):** 정밀 정렬 후 EPM 마그네틱 클램핑, 이중 핀 고정 및 3중 쿠션 구조를 통해 무전력 영구자석 고정 및 비상시 안전 해제를 지향함.
+* **물리적 비상 차단·해제 (`0.1ms HW Intercept` / `LAST-LIGHT` 연계):** 화재, 정전 등 비상 상황 발생 시 Hardware Intercept 신호에 의해 EPM 클램프 자력이 역펄스 해제(Release)되거나 무전력 기계식 이탈을 지원함.
+* **연산적 제어 생존 (`chiplet-apu-multi-system-survival-architecture`):** 분산 관제(CCS) 및 다중 칩렛 제어 아키텍처와 결합하여 관제 칩렛 고장 시에도 클램핑 제어 로직이 지속 동작하도록 구성함.
 
 ---
 
-## 6. 역할 및 협업
-- **설계자 / 원안 / 전체 기획 / 도면 디렉팅 (deundeuni):** 아이디어 원안, 메커니즘 및 3중 쿠션 구조 고안, 통합 플랫폼 기획
-- **Meta AI:** 설계자 의도에 기반한 시각화 도면 생성 및 문장 정리 보조
-- **Gemini:** 문서 서식 및 구조화 보조
+## 4. 한계, 보증 부인 및 면책 (Limitation, Disclaimer of Warranties & Liability)
+
+본 문서는 방어적 공개를 위한 기술적 개념 개시이며, 어떠한 보증도 없이 있는 그대로(AS-IS) 제공된다.
+
+1. **보증 부인:** 특정 목적 적합성, 상품성, 안전성, 제품화를 보증하지 않는다.
+2. **책임 제한:** 본 문서의 사용, 구현, 응용으로 인한 직접·간접 손해, 사고, 손실에 대해 작성자(deundeuni)는 어떠한 법적 책임도 지지 않는다.
+3. **제3자 권리 비보증:** 본 문서가 제3자의 특허, 상표, 저작권 등 권리를 침해하지 않음을 보증하지 않으며, 권리 조사는 구현자의 책임이다.
+4. **법규·안전·인증 책임:** 각 국가의 법규, 전기·소방·안전 기준, 인증 획득 및 안전 검증 책임은 전적으로 구현자에게 있다.
 
 ---
 
-## 7. 현재 상태 및 법적 고지
+## 5. 도면 및 인공지능 시각화 면책 (Figures & AI Visualization Disclaimer)
 
-### 현재 상태
-본 프로젝트는 아이디어와 구조를 공유하는 개념 설계(Conceptual Design) 단계입니다.
+> **Note:** The mechanism concept in this specification was independently conceived by deundeuni. Attached figures or conceptual drawings (such as `cwp-clampinglock-exploded-view.webp`) are visual examples generated using AI tools (Meta AI) for explanatory purposes only and are not copied from any existing product or registered patent.
 
-### 법적 고지 (Legal Notice)
-1. 본 문서는 개념 설계 단계의 아이디어를 설명하며, 상용 제품의 성능을 보증하지 않습니다.
-2. 특정 기업이나 제품을 모방하거나 비방할 목적이 없습니다.
-3. 본 설계는 실험적 개념이며, 실제 적용 시 별도의 물리적 검증 및 안전성 평가가 필요합니다.
+* **도면 비고:** 본 도면에 기술된 모든 치수, 유격, 수량은 예시이며 범위를 한정하지 않는다. EPM 자력 체결, 캡티브 핀 및 3중 쿠션 완충 메커니즘 구조만이 본 공개의 핵심이다.
+
+---
+
+## 6. 라이선스 및 상업적 이용 안내 (Licensing)
+
+```text
+CERN Open Hardware Licence Version 2 - Strongly Reciprocal (CERN-OHL-S v2)
+Copyright (c) 2026 deundeuni
+
+This hardware design is licensed under CERN-OHL-S v2.
+You may manufacture and distribute it, even commercially,
+but if you distribute products based on it, you must also
+make the modified design files available under the same license.
+
+Full text: [https://ohwr.org/cern_ohl_s_v2.pdf](https://ohwr.org/cern_ohl_s_v2.pdf)
+
+Documentation and figures: CC BY-SA 4.0
+[https://creativecommons.org/licenses/by-sa/4.0/](https://creativecommons.org/licenses/by-sa/4.0/)
