@@ -1,29 +1,34 @@
-> **다국어 공개 안내:** 본 문서는 동일 내용의 한/영 이중 공개 문서입니다. v2.1 2026-09-06 (영문: [README_EN.md](README_EN.md))  
+> **다국어 공개 안내:** 본 문서는 동일 내용의 한/영 이중 공개 문서입니다. v2.2 2026-09-13 (영문: [README_EN.md](README_EN.md))  
 > **Original Authority Notice:** 본 기술 명세의 법적·공학적 판단 최상위 기준은 한글 원본(`README.ko.md`)에 귀속되며, 영문본은 보조 참조용으로만 기능한다. (PHILOSOPHY.ko.md is authoritative original)
 
-# CWP-Clamping-Battery-Swap-System v2.1 (CWP-ClampingLock)
+# CWP-Clamping-Battery-Swap-System v2.2 (CWP-ClampingLock) - 범용 중량물·소형 모듈 페일세이프 전자기 클램핑 플랫폼의 배터리 적용 실시예
 
-* **공개 일자:** 2026-09-06 (초안 2026-08-20, v2.0 2026-08-23, v2.1 2026-09-06)
+* **공개 일자:** 2026-09-13 (초안 2026-08-20, v2.0 2026-08-23, v2.1 2026-09-06, v2.2 2026-09-13)
 * **작성자:** deundeuni (System Architect / Natural Person Inventor)
 * **라이선스:** CERN-OHL-S v2 (하드웨어/CAD/도면) | CC BY-SA 4.0 (문서/설명)
 * **공개 목적:** 방어적 공개 / 선행기술(Prior Art) 등록 - 독점 특허화 방지 및 권리 침해 위험 완화
-* **검색 키워드:** CWP, CWP-Clamping, CWP-ClampingLock, EPM, Electro-Permanent Magnet, 펄스 구동 영구자석, 캡티브 듀얼 핀, 3중 쿠션, 비접촉 고정, EV 배터리 스왑, 무전원 고정, Prior Art, CWP-Entry, CWP-Battery-Swap, CWP-Rolling-Self-Align
+* **검색 키워드:** CWP, CWP-Clamping, CWP-ClampingLock, EPM, Electro-Permanent Magnet, 펄스 구동 영구자석, 캡티브 듀얼 핀, 3중 쿠션, 비접촉 고정, EV 배터리 스왑, 무전원 고정, Prior Art, CWP-Entry, CWP-Battery-Swap, CWP-Rolling-Self-Align, 범용 중량물 클램핑, Heavy Payload Clamping Platform, Off-Grid EPM Lock, 노지 중량 모듈 전자기 고정
 
 ---
 
 ## 0. 설계자 독자 아키텍처 및 선행기술 공개 선언 (Designer's Philosophical Declaration)
 
 1. **설계 철학 및 기술 조합의 독자성 (Architectural Conception):**  
-   본 시스템은 특정 기업의 독점적인 방식을 모방한 것이 아니라, 교환식 배터리 생태계가 요구하는 상호 호환성과 정전 시 무전원 고정 유지라는 표준적 안전 요구사항을 해결하고자 하는 **설계자(deundeuni)의 독자적 철학과 문제 의식**에서 출발하였다. '펄스 구동 영구자석(EPM) 비접촉 체결 + 캡티브 듀얼 핀 구속 + 3중 쿠션 완충 메커니즘'을 결합하고, 범용 고정 인터페이스 파라미터를 정립한 아키텍처 결정권은 설계자 자연인에게 있다.
+   본 시스템은 특정 기업의 독점적인 방식을 모방한 것이 아니라, 교환식 배터리 및 중량 모듈 생태계가 요구하는 상호 호환성과 정전 시 무전원 고정 유지라는 표준적 안전 요구사항을 해결하고자 하는 **설계자(deundeuni)의 독자적 철학과 문제 의식**에서 출발하였다. '펄스 구동 영구자석(EPM) 비접촉 체결 + 캡티브 듀얼 핀 구속 + 3중 쿠션 완충 메커니즘'을 결합하고, 범용 고정 인터페이스 파라미터를 정립한 아키텍처 결정권은 설계자 자연인에게 있다.
 
 2. **소프트웨어 유틸리티 활용에 관한 명시 (Software Utility Limitation):**  
-   본 문서 작성 과정에서 활용된 소프트웨어 및 AI 도구(Meta AI, Google Gemini)는 설계자가 이미 정의한 기술 조합, 설계 방향, 수치 파라미터를 바탕으로 단순 포맷팅, 문맥 정제, 개념 시각화 출력을 실행한 **수동적 실행 유틸리티(Passive Execution Utility)**에 국한된다. 본 인프라의 모든 설계 의도, 구조적 결합권, 선행기술 공개 권한은 전적으로 설계자 자연인에게 귀속된다.
+   본 문서 작성 과정에서 활용된 소프트웨어 및 AI 도구는 설계자가 이미 정의한 기술 조합, 설계 방향, 수치 파라미터를 바탕으로 단순 포맷팅, 문맥 정제, 개념 시각화 출력을 실행한 **수동적 실행 유틸리티(Passive Execution Utility)**에 국한된다. 본 인프라의 모든 설계 의도, 구조적 결합권, 선행기술 공개 권한은 전적으로 설계자 자연인에게 귀속된다.
 
 ---
 
-## 1. 개요
-CWP-ClampingLock은 전기차, 물류 로봇, 드론 등 다종 모빌리티 배터리 고정을 위한 범용 EPM 마그네틱 클램핑 모듈 개념 설계이다.  
+## 1. 개요 및 적용 범위
+
+### 1.1 개요
+CWP-ClampingLock은 전기차, ESS, 모듈러 주택, 재난 대피소, 농기계 모듈, 물류 로봇, 드론 등 다종 중량물 및 소형 페이로드 고정을 위한 범용 EPM 마그네틱 클램핑 모듈 개념 설계이다.  
 특정 기업의 독점 방식을 배제하고 상호 호환성과 무전원 유지 표준 기준을 충족하는 범용 인터페이스 구조를 지향한다.
+
+### 1.2 적용 범위 (Application Scope)
+본 구조는 EV 배터리 교환에 한정되지 않으며, 노지 및 부평탄 지형에서 중량 모듈러 주택, 재난 대피소, 농기계 모듈, 물류 파렛트 등 500kg 이상 중량물 및 소형 모듈 페이로드의 무전력 영구자석 고정, 진동 흡수 체결 및 비상 안전 해제에 범용으로 적용 가능하다. EV, ESS, 물류로봇(AGV/AMR), 드론, 선박, 항공우주, 건설·농업용 중장비 모듈 등 무전원 체결 및 클램핑이 필요한 전 분야를 포괄한다.
 
 ---
 
@@ -37,20 +42,20 @@ CWP-ClampingLock은 전기차, 물류 로봇, 드론 등 다종 모빌리티 배
 
 ## 3. 흔들림 방지 구조 (3중 쿠션 완충 메커니즘)
 
-* **우레탄 패드:** 배터리 접촉면 충격 완화 및 신속 체결 완충.
+* **우레탄 패드:** 배터리 및 중량 모듈 접촉면 충격 완화 및 신속 체결 완충.
 * **접시 스프링:** 핀 후면 미세 진동 흡수 및 자력 인력 방향 예하중 유지.
-* **에어갭 (Air Gap):** 자석과 배터리 인터페이스 사이 유연 틈새 설계를 통한 구조적 충격 분산.
+* **에어갭 (Air Gap):** 자석과 모듈 인터페이스 사이 유연 틈새 설계를 통한 구조적 충격 분산.
 
 ---
 
 ## 3.5 CWP 3대 하드웨어 연계 및 생존 아키텍처 (CWP 3-Hardware & System Integration)
 
-본 ClampingLock 모듈은 단독 고정 장치에 그치지 않고 CWP 3대 핵심 하드웨어 메커니즘 및 상위 생존 아키텍처와 유기적으로 결합되어 무중단 생존 지향형 교환 스테이션으로 동작할 수 있다.
+본 ClampingLock 모듈은 단독 고정 장치에 그치지 않고 CWP 3대 핵심 하드웨어 메커니즘 및 상위 생존 아키텍처와 유기적으로 결합되어 무중단 생존 지향형 교환 스테이션 및 고정밀 도킹 인프라로 동작할 수 있다.
 
-* **진입 유도 및 1차 정렬 (`CWP-Entry`):** 세차장 V레일 인프라 원용 및 라인 레이저 가이드를 통해 차량 진입 오차를 완화하고 정비 구역으로 유도함.
+* **진입 유도 및 1차 정렬 (`CWP-Entry`):** 세차장 V레일 및 지면 가이드 홈 인프라 원용과 라인 레이저 가이드를 통해 진입 오차를 완화하고 정비 구역으로 유도함.
 * **기구적 2차 정렬 (`CWP-Rolling-Self-Align-Battery-Swap-System`):** V-홈 및 캐스터 수동/자율 정렬 메커니즘(A/B/C/S 타입)과 연동하여 진입 후 치수 오차(예: ±5mm 이상)를 물리적으로 흡수하고 정밀 도킹 구역으로 유도함.
 * **차동 감속 저충격 도킹 (`CWP-Battery-Swap`):** N/(N+1) 차동 기어비(예: 60T/61T) 및 회전형 스테이지를 활용하여 도킹 상대속도를 극저속(예: 0.016rpm 수준)으로 감속시켜 완충 도킹을 지향함.
-* **전자기 클램핑 및 안전 체결 (`CWP-Clamping-Battery-Swap-System` - 본 기술):** 정밀 정렬 후 EPM 마그네틱 클램핑, 이중 핀 고정 및 3중 쿠션 구조를 통해 무전력 영구자석 고정 및 비상시 안전 해제를 지향함.
+* **전자기 클램핑 및 안전 체결 (`CWP-Clamping-Battery-Swap-System` - 본 기술):** 정밀 정렬 후 EPM 마그네틱 클램핑, 이중 핀 고정 및 3중 쿠션 구조를 통해 무전력 영구자석 고정 및 비상시 안전 해제를 지향함. (배터리 팩 및 500kg 이상 범용 중량 모듈 공통 적용)
 * **물리적 비상 차단·해제 (`0.1ms HW Intercept` / `LAST-LIGHT` 연계):** 화재, 정전 등 비상 상황 발생 시 Hardware Intercept 신호에 의해 EPM 클램프 자력이 역펄스 해제(Release)되거나 무전력 기계식 이탈을 지원함.
 * **연산적 제어 생존 (`chiplet-apu-multi-system-survival-architecture`):** 분산 관제(CCS) 및 다중 칩렛 제어 아키텍처와 결합하여 관제 칩렛 고장 시에도 클램핑 제어 로직이 지속 동작하도록 구성함.
 
@@ -69,8 +74,7 @@ CWP-ClampingLock은 전기차, 물류 로봇, 드론 등 다종 모빌리티 배
 
 ## 5. 도면 및 인공지능 시각화 면책 (Figures & AI Visualization Disclaimer)
 
-> **Note:** The mechanism concept in this specification was independently conceived by deundeuni. Attached figures or conceptual drawings (such as `cwp-clampinglock-exploded-view.webp`) are visual examples generated using AI tools (Meta AI) for explanatory purposes only and are not copied from any existing product or registered patent.
-
+* **주의 (AI 시각화 면책 조항):** 본 명세서의 메커니즘 개념은 작성자(deundeuni)가 독자적으로 고안했습니다. 첨부된 도면 및 개념도(예: `cwp-clampinglock-exploded-view.webp`)는 이해를 돕기 위해 범용 생성형 AI 시각화 도구를 활용하여 생성된 예시일 뿐이며, 기존 상용 제품이나 타인의 등록 특허 도면을 복제한 것이 아닙니다.
 * **도면 비고:** 본 도면에 기술된 모든 치수, 유격, 수량은 예시이며 범위를 한정하지 않는다. EPM 자력 체결, 캡티브 핀 및 3중 쿠션 완충 메커니즘 구조만이 본 공개의 핵심이다.
 
 ---
@@ -90,3 +94,31 @@ Full text: [https://ohwr.org/cern_ohl_s_v2.pdf](https://ohwr.org/cern_ohl_s_v2.p
 
 Documentation and figures: CC BY-SA 4.0
 [https://creativecommons.org/licenses/by-sa/4.0/](https://creativecommons.org/licenses/by-sa/4.0/)
+```
+
+* **상업적 이용 안내:** 상업적 제조/판매 모두 가능함. CWP 부분을 개선한 도면만 같은 라이선스로 공개하면 되며, 귀사의 다른 비밀 설계까지 공개할 필요는 없음.
+
+---
+
+## 7. 실리보호 (Practical Protection)
+
+* **원안 우선 원칙:** 본 명세서의 법적·기술적 해석은 한국어 원본(`README.ko.md`)을 최우선 기준으로 적용하며, 영문본 및 기타 언어 번역본은 참고용으로만 기능한다.
+* **범위 포괄성:** 본 문서에 기술된 EPM 펄스 수치, 핀 지름, 쿠션 두께, 에어갭 범위 등은 광범위한 선행기술 선점을 위한 예시로서 상위개념으로 포괄 적용된다.
+* **사업화 내용 분리:** 본 백서 원안에는 Pure Open Source 및 선행기술 개시 내용만을 포함하며, 독자적인 수익 모델 및 사업화 세부 실행안은 별도 기술 문서로 분리 관리한다.
+
+---
+
+## 8. 출처 및 기록 (Sources & Records)
+
+* **소마모아 생태계 저장소 및 학술 식별자 (Ecosystem Repositories & DOIs)**
+  * 상위 범용 생존 아키텍처 & APU 연산 제어기 (`chiplet-apu-multi-system-survival-architecture`) — GitHub: `deundeuni / chiplet-apu-multi-system-survival-architecture` | CERN Zenodo DOI: `10.5281/zenodo.22374987` (https://doi.org/10.5281/zenodo.22374987)
+  * 재난 피난 유도 & 보조 인프라 (`LAST-LIGHT`) — GitHub: `deundeuni / LAST-LIGHT` | CERN Zenodo DOI: `10.5281/zenodo.22373189` (https://doi.org/10.5281/zenodo.22373189)
+  * CWP 전자기 클램핑 (`CWP-Clamping-Battery-Swap-System`) — CERN Zenodo DOI: `10.5281/zenodo.22373722` (https://doi.org/10.5281/zenodo.22373722)
+  * CWP 배터리 교환 도킹 (`CWP-Battery-Swap`) — CERN Zenodo DOI: `10.5281/zenodo.22373538` (https://doi.org/10.5281/zenodo.22373538)
+  * CWP 롤링 셀프얼라인 (`CWP-Rolling-Self-Align-Battery-Swap-System`) — CERN Zenodo DOI: `10.5281/zenodo.22373704` (https://doi.org/10.5281/zenodo.22373704)
+  * CWP 진입 유도 정렬 (`CWP-Entry`) — GitHub: `deundeuni / CWP-Entry`
+  * 최상위 거점 관문 및 메인 저장소 (`soma-moa`) — GitHub: `deundeuni / soma-moa` | 관문 도메인: `somamoa.ai.kr`
+
+* **법적 근거 및 선사용권 규정 (Legal Statutes & Precedents)**
+  * 대한민국 특허법 제103조 — 선사용에 의한 통상실시권
+  * 미국 특허법 35 U.S.C. §273 — Defense to Infringement Based on Prior Commercial Use
