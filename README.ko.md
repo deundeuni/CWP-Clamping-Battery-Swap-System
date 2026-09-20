@@ -1,3 +1,4 @@
+
 > **다국어 공개 안내:** 본 문서는 동일 내용의 한/영 이중 공개 문서입니다. v2.2 2026-09-13 (영문: [README_EN.md](README_EN.md))  
 > **Original Authority Notice:** 본 기술 명세의 법적·공학적 판단 최상위 기준은 한글 원본(`README.ko.md`)에 귀속되며, 영문본은 보조 참조용으로만 기능한다. (PHILOSOPHY.ko.md is authoritative original)
 
@@ -13,8 +14,8 @@
 
 ## 0. 설계자 독자 아키텍처 및 선행기술 공개 선언 (Designer's Philosophical Declaration)
 
-1. **설계 철학 및 기술 조합의 독자성 (Architectural Conception):**  
-   본 시스템은 특정 기업의 독점적인 방식을 모방한 것이 아니라, 교환식 배터리 및 중량 모듈 생태계가 요구하는 상호 호환성과 정전 시 무전원 고정 유지라는 표준적 안전 요구사항을 해결하고자 하는 **설계자(deundeuni)의 독자적 철학과 문제 의식**에서 출발하였다. '펄스 구동 영구자석(EPM) 비접촉 체결 + 캡티브 듀얼 핀 구속 + 3중 쿠션 완충 메커니즘'을 결합하고, 범용 고정 인터페이스 파라미터를 정립한 아키텍처 결정권은 설계자 자연인에게 있다.
+1. **설계 철학 및 공지기술의 응용적 독자성 (Architectural Conception & Prior Art Respect):**  
+   본 시스템은 공지된 전자영구자석(Electro-Permanent Magnet, EPM) 펄스 극성 전환 메커니즘 및 기구학적 구속·완충 선행기술을 기초로 한다. 본 백서는 전기차, ESS, 모듈러 구조체 등 다양한 중량물 체결 시 정전이나 비상 상황에서도 무전력 자력 고정을 유지하고 안전하게 해제하고자 하는 **설계자(deundeuni)의 독자적 철학과 문제 의식**에서 출발하였다. 공지된 원리를 바탕으로 '펄스 구동 영구자석(EPM) 비접촉 체결 + 캡티브 듀얼 핀 구속 + 3중 쿠션 완충 메커니즘'을 결합하고, 범용 고정 인터페이스 파라미터를 정립한 아키텍처 결정권은 설계자 자연인에게 귀속된다. 본 시스템은 EPM 및 전자기 클램핑 기술을 개척한 선행 연구자 및 특허권자들의 공학적 성과를 존중하며, 공지 원리를 구체적 실시예 파라미터 조합으로 응용 개시함을 명시한다.
 
 2. **소프트웨어 유틸리티 활용에 관한 명시 (Software Utility Limitation):**  
    본 문서 작성 과정에서 활용된 소프트웨어 및 AI 도구는 설계자가 이미 정의한 기술 조합, 설계 방향, 수치 파라미터를 바탕으로 단순 포맷팅, 문맥 정제, 개념 시각화 출력을 실행한 **수동적 실행 유틸리티(Passive Execution Utility)**에 국한된다. 본 인프라의 모든 설계 의도, 구조적 결합권, 선행기술 공개 권한은 전적으로 설계자 자연인에게 귀속된다.
@@ -63,12 +64,12 @@ CWP-ClampingLock은 전기차, ESS, 모듈러 주택, 재난 대피소, 농기�
 
 ## 4. 한계, 보증 부인 및 면책 (Limitation, Disclaimer of Warranties & Liability)
 
-본 문서는 방어적 공개를 위한 기술적 개념 개시이며, 어떠한 보증도 없이 있는 그대로(AS-IS) 제공된다.
+본 문서는 선행기술 개시 및 방어적 공개를 목적으로 작성되었으며, 어떠한 보증도 없이 '있는 그대로(AS-IS)' 제공된다.
 
-1. **보증 부인:** 특정 목적 적합성, 상품성, 안전성, 제품화를 보증하지 않는다.
-2. **책임 제한:** 본 문서의 사용, 구현, 응용으로 인한 직접·간접 손해, 사고, 손실에 대해 작성자(deundeuni)는 어떠한 법적 책임도 지지 않는다.
-3. **제3자 권리 비보증:** 본 문서가 제3자의 특허, 상표, 저작권 등 권리를 침해하지 않음을 보증하지 않으며, 권리 조사는 구현자의 책임이다.
-4. **법규·안전·인증 책임:** 각 국가의 법규, 전기·소방·안전 기준, 인증 획득 및 안전 검증 책임은 전적으로 구현자에게 있다.
+1. **보증 부인 (Disclaimer of Warranties):** 특정 목적 적합성, 상품성, 무결성, 제품화 가능성 및 제3자 특허 비침해를 보증하지 않는다.
+2. **책임 제한 (Limitation of Liability):** 본 문서의 기술 개시 내용의 활용, 구현, 직접·간접 응용으로 인해 발생 가능한 직접 손해, 간접 손해, 징벌적 손해, 사고 또는 사업적 손실에 대해 작성자(deundeuni)는 법적 책임을 지지 아니한다.
+3. **미필적 고지 및 고의 침해 배제 (Non-willful Infringement Notice):** 본 공개는 미국 특허법상 고의 침해(Willful Infringement / 35 U.S.C. §284 및 관련 판례 법리) 주장에 대한 방어적 거점을 형성하고, 공공 영역(Public Domain)에 선행기술을 명시하여 제3자의 독점적 특허 출원을 방지하기 위한 방어적 개시 조치이며, 타인의 권리를 고의로 침해하려는 의도가 없음을 명시한다.
+4. **법규·안전·인증 책임:** 각 국가별 법규, 전기·소방·소음·진동 안전 기준 준수, 인증 획득 및 현장 안전 검증 책무는 전적으로 구현자 및 사업화 주체에게 귀속된다.
 
 ---
 
@@ -81,20 +82,18 @@ CWP-ClampingLock은 전기차, ESS, 모듈러 주택, 재난 대피소, 농기�
 
 ## 6. 라이선스 및 상업적 이용 안내 (Licensing)
 
-```text
-CERN Open Hardware Licence Version 2 - Strongly Reciprocal (CERN-OHL-S v2)
-Copyright (c) 2026 deundeuni
-
-This hardware design is licensed under CERN-OHL-S v2.
-You may manufacture and distribute it, even commercially,
-but if you distribute products based on it, you must also
-make the modified design files available under the same license.
-
-Full text: [https://ohwr.org/cern_ohl_s_v2.pdf](https://ohwr.org/cern_ohl_s_v2.pdf)
-
-Documentation and figures: CC BY-SA 4.0
-[https://creativecommons.org/licenses/by-sa/4.0/](https://creativecommons.org/licenses/by-sa/4.0/)
-```
+> CERN Open Hardware Licence Version 2 - Strongly Reciprocal (CERN-OHL-S v2)  
+> Copyright (c) 2026 deundeuni  
+>  
+> This hardware design is licensed under CERN-OHL-S v2.  
+> You may manufacture and distribute it, even commercially,  
+> but if you distribute products based on it, you must also  
+> make the modified design files available under the same license.  
+>  
+> Full text: https://ohwr.org/cern_ohl_s_v2.pdf  
+>  
+> Documentation and figures: CC BY-SA 4.0  
+> https://creativecommons.org/licenses/by-sa/4.0/  
 
 * **상업적 이용 안내:** 상업적 제조/판매 모두 가능함. CWP 부분을 개선한 도면만 같은 라이선스로 공개하면 되며, 귀사의 다른 비밀 설계까지 공개할 필요는 없음.
 
@@ -110,6 +109,19 @@ Documentation and figures: CC BY-SA 4.0
 
 ## 8. 출처 및 기록 (Sources & Records)
 
+* **전자기 클램핑 및 전자영구자석(EPM) 공지기술 원리 (Foundational EPM & Magnetic Clamping Prior Art)**
+  * Electro-Permanent Magnet (EPM) Pulse-Switching Principles — 가역 영구자석(Alnico 등)과 비가역 영구자석(NdFeB 등)의 코일 순간 펄스 전류에 의한 극성 전환 및 무전력 자력 고정 공지 기술
+  * US Patent US7999645B2 / US20100308519A1 — Electro-permanent magnetic work holding and clamping apparatus using pulse-switched reversible permanent magnets
+  * US Patent US9164154B2 / EP1419034B1 — Electro-permanent magnetic clamping systems with bistable state holding and activation control
+  * US Patent US10984936B2 / US8674576B2 — Electropermanent magnet arrays and actuators for robotic latching and workholding
+
+* **기구학적 구속 및 완충 선행기술 (Kinematic Latching & Damping Prior Art)**
+  * Captive Dual Pin & Mechanical Retention Mechanisms — 기계식 이탈 방지 핀 및 다중 체결 래칭 공지 구조
+  * Belleville Washer (Disc Spring) & Elastomer Damping — 접시 스프링 예하중 및 우레탄 쿠션 진동 감쇄 결합 공지 기술
+
+* **본 실시예의 공학적 차별점 (Specific Embodiment Feature)**
+  * 공지된 EPM 자력 극성 전환 및 기계식 핀·스프링 완충 원리를 기초로 하되, '펄스 구동 EPM 비접촉 체결 + 캡티브 듀얼 핀 구속 + 3중 쿠션(우레탄, 접시스프링, 에어갭) 완충 메커니즘'을 범용 모듈형 인터페이스 규격 및 비상 릴리즈 제어와 결합·한정한 특정 실시예 구조에 기술적 차별성이 있음
+
 * **소마모아 생태계 저장소 및 학술 식별자 (Ecosystem Repositories & DOIs)**
   * 상위 범용 생존 아키텍처 & APU 연산 제어기 (`chiplet-apu-multi-system-survival-architecture`) — GitHub: `deundeuni / chiplet-apu-multi-system-survival-architecture` | CERN Zenodo DOI: `10.5281/zenodo.22374987` (https://doi.org/10.5281/zenodo.22374987)
   * 재난 피난 유도 & 보조 인프라 (`LAST-LIGHT`) — GitHub: `deundeuni / LAST-LIGHT` | CERN Zenodo DOI: `10.5281/zenodo.22373189` (https://doi.org/10.5281/zenodo.22373189)
@@ -119,6 +131,7 @@ Documentation and figures: CC BY-SA 4.0
   * CWP 진입 유도 정렬 (`CWP-Entry`) — GitHub: `deundeuni / CWP-Entry`
   * 최상위 거점 관문 및 메인 저장소 (`soma-moa`) — GitHub: `deundeuni / soma-moa` | 관문 도메인: `somamoa.ai.kr`
 
-* **법적 근거 및 선사용권 규정 (Legal Statutes & Precedents)**
+* **법적 근거 및 선사용권·미필적 고지 규정 (Legal Statutes & Precedents)**
   * 대한민국 특허법 제103조 — 선사용에 의한 통상실시권
   * 미국 특허법 35 U.S.C. §273 — Defense to Infringement Based on Prior Commercial Use
+  * 미필적 고지 및 방어적 개시 규정 — 본 문서는 미국 특허법상 고의 침해(Willful Infringement / 35 U.S.C. §284 및 관련 판례 법리) 주장에 대한 사전 방어 논리를 제공하고, 공공 영역(Public Domain)에 선행기술을 명시적으로 개시하여 제3자의 독점 특허화를 방지하기 위한 방어적 공개(Defensive Publication) 목적으로 공개되었음.
